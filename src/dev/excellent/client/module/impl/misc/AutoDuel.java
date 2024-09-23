@@ -11,7 +11,6 @@ import dev.excellent.client.module.api.ModuleInfo;
 import dev.excellent.impl.util.time.TimerUtil;
 import dev.excellent.impl.value.impl.BooleanValue;
 import dev.excellent.impl.value.impl.MultiBooleanValue;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.ClickType;
@@ -44,67 +43,50 @@ public class AutoDuel extends Module {
     }};
 
     private final List<String> sent = Lists.newArrayList();
-    private int duelAttempts = 0; // Counter for duel attempts
 
     private final TimerUtil timerUtil = TimerUtil.create();
     private final TimerUtil timerUtil2 = TimerUtil.create();
     private final TimerUtil timerUtilChoice = TimerUtil.create();
     private final TimerUtil timerUtilTo = TimerUtil.create();
 
-    @Override
-    public void onEnable() {
-        duelAttempts = 0; // Reset attempts when module is enabled
-        sent.clear(); // Clear sent players list when enabled
-    }
-
     private final Listener<UpdateEvent> onUpdate = event -> {
+        if (areAllModesDisabled()) {
+            toggle();
+            return;
+        }
+
         final List<String> players = getOnlinePlayers();
 
         if (timerUtil2.hasReached(800L * players.size())) {
             sent.clear();
-            duelAttempts = 0; // Reset attempts
             timerUtil2.reset();
         }
 
         for (final String player : players) {
             if (!sent.contains(player) && !player.equals(mc.session.getProfile().getName())) {
-                if (timerUtil.hasReached(500) && duelAttempts < 25) { // Change limit to 25 attempts
+                if (timerUtil.hasReached(500)) {
                     mc.player.sendChatMessage("/duel " + player);
                     sent.add(player);
-                    duelAttempts++; // Increment the counter
                     timerUtil.reset();
                 }
             }
         }
 
-        // Если ни один набор не выбран, включаем "Классик"
-        if (mode.getValues().stream().noneMatch(BooleanValue::getValue)) {
-            mode.getValues().stream()
-                    .filter(value -> value.getName().equals("Классик"))
-                    .findFirst()
-                    .ifPresent(value -> value.setValue(true));
-        }
+        if (mc.player.openContainer instanceof ChestContainer chest) {
+            if (mc.currentScreen.getTitle().getString().contains("Выбор набора (1/1)")) {
+                final List<Integer> slotsID = new ArrayList<>();
+                int index = 0;
 
-        try {
-            if (mc.player.openContainer instanceof ChestContainer chest) {
-                final Screen screen = mc.currentScreen;
-                if (screen != null && screen.getTitle().getString().contains("Выбор набора (1/1)")) {
-                    final List<Integer> slotsID = new ArrayList<>();
-                    int index = 0;
-
-                    for (BooleanValue value : mode.getValues()) {
-                        if (!value.getValue()) {
-                            index++;
-                            continue;
-                        }
-                        slotsID.add(index);
+                for (BooleanValue value : mode.getValues()) {
+                    if (!value.getValue()) {
                         index++;
+                        continue;
                     }
+                    slotsID.add(index);
+                    index++;
+                }
 
-                    if (slotsID.isEmpty()) {
-                        throw new IllegalStateException("Не удалось выбрать ни один из доступных наборов.");
-                    }
-
+                if (!slotsID.isEmpty()) {
                     Collections.shuffle(slotsID);
                     final int slotID = slotsID.get(0);
 
@@ -112,22 +94,13 @@ public class AutoDuel extends Module {
                         mc.playerController.windowClick(chest.windowId, slotID, 2, ClickType.CLONE, mc.player);
                         timerUtilChoice.reset();
                     }
-                } else if (screen != null && screen.getTitle().getString().contains("Настройка поединка")) {
-                    if (timerUtilTo.hasReached(150)) {
-                        mc.playerController.windowClick(chest.windowId, 0, 2, ClickType.CLONE, mc.player);
-                        timerUtilTo.reset();
-                    }
+                }
+            } else if (mc.currentScreen.getTitle().getString().contains("Настройка поединка")) {
+                if (timerUtilTo.hasReached(150)) {
+                    mc.playerController.windowClick(chest.windowId, 0, 2, ClickType.CLONE, mc.player);
+                    timerUtilTo.reset();
                 }
             }
-        } catch (Exception e) {
-            // Отключение автодуэли в случае ошибки
-            toggle();
-            e.printStackTrace();  // Для отладки, можно убрать на релизе
-        }
-
-        // Disable module after 25 attempts
-        if (duelAttempts >= 25) {
-            toggle();
         }
     };
 
@@ -137,8 +110,7 @@ public class AutoDuel extends Module {
 
             if (packet instanceof SChatPacket chat) {
                 final String text = chat.getChatComponent().getString().toLowerCase();
-                if ((text.contains("начало") && text.contains("через") && text.contains("секунд!")) ||
-                        (text.equals("дуэли » во время поединка запрещено использовать команды"))) {
+                if ((text.contains("начало") && text.contains("через") && text.contains("секунд!")) || (text.equals("дуэли » во время поединка запрещено использовать команды"))) {
                     toggle();
                 }
             }
@@ -152,4 +124,9 @@ public class AutoDuel extends Module {
                 .filter(profileName -> pattern.matcher(profileName).matches())
                 .collect(Collectors.toList());
     }
+
+    private boolean areAllModesDisabled() {
+        return mode.getValues().stream().noneMatch(BooleanValue::getValue);
+    }
+
 }
