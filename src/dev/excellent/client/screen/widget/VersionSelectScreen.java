@@ -67,7 +67,7 @@ public class VersionSelectScreen implements IAccess, IScreen, IMouse {
             int alpha = 255;
 
             RenderUtil.renderClientRect(matrixStack, x, y, width, isExpand ? height + 2 : height, height > margin, margin, alpha);
-            bold.drawCenter(matrixStack, "Выберите версию", x + width / 2F, fontY, ColorUtil.getColor(255, 255, 255, alpha));
+            bold.drawCenter(matrixStack, "Select version", x + width / 2F, fontY, ColorUtil.getColor(255, 255, 255, alpha));
 
             float padding = 8;
             float scrollY = y + (margin + 2) + padding / 2F;
