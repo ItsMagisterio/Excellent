@@ -31,8 +31,8 @@ public class DiscordManager {
         running = true;
         webhook = new DiscordWebhook("https://discord.com/api/webhooks/1171541610983600148/TYrIcXPUqnF2_3P9ZwkMNY6NqRHIoZwiJRlGla5kV_vXAsFa2wtHhl2lGHwGkidCwjFn");
         image = "https://s9.gifyu.com/images/SUK4s.gif";
-        telegram = "https://t.me/excellent_client/";
-        discord = "https://discord.gg/EahYtazjtd";
+        telegram = " "/*"https://t.me/excellent_client/"*/;
+        discord = " "/*"https://discord.gg/EahYtazjtd"*/;
     }
 
     @Native

@@ -202,15 +202,15 @@ public class MainMenu extends Screen implements IAccess, IMouse {
         if (isLClick(button)) {
             // discord
             if (isHover(mouseX, mouseY, socX - telegramWidth - margin - youtubeWidth - margin - discordWidth - margin / 2F, socY - margin / 2F, discordWidth + margin, social.getHeight() + margin)) {
-                Util.getOSType().openURI(new URI("https://discord.gg/EahYtazjtd"));
+                Util.getOSType().openURI(new URI(" "/*https://discord.gg/EahYtazjtd"*/));
             }
             // telegram
             if (isHover(mouseX, mouseY, socX - youtubeWidth - margin - discordWidth - margin / 2F, socY - margin / 2F, discordWidth + margin, social.getHeight() + margin)) {
-                Util.getOSType().openURI(new URI("https://t.me/excellent_client"));
+                Util.getOSType().openURI(new URI(" "/*"https://t.me/excellent_client"*/));
             }
             // youtube
             if (isHover(mouseX, mouseY, socX - youtubeWidth - margin / 2F, socY - margin / 2F, discordWidth + margin, social.getHeight() + margin)) {
-                Util.getOSType().openURI(new URI("https://www.youtube.com/@fusurt"));
+                Util.getOSType().openURI(new URI(" "/*"https://www.youtube.com/@fusurt"*/));
             }
         }
 
