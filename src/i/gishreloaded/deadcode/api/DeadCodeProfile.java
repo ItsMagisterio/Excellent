@@ -21,7 +21,7 @@ public class DeadCodeProfile {
 
     @Native
     public static DeadCodeProfile create() {
-        return new DeadCodeProfile(0, "Bodya?*", DeadCodeRole.DEVELOPER, null);
+        return new DeadCodeProfile(0, "Excellent", DeadCodeRole.USER, null);
     }
 
 }

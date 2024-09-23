@@ -56,7 +56,8 @@ public class Watermark extends Module {
             "Лучший выбор",
             "Всегда превосходно",
             "Надежно и качественно",
-            "Безупречно"
+            "Безупречно",
+            "Say Thx to Dev. Bodya?*"
     ), 2000);
 
     @Getter
@@ -107,7 +108,7 @@ public class Watermark extends Module {
             float margin = 5;
             Font pixelFont = Fonts.SMALL_PIXEL.get(24);
             Font pixelFontSmall = Fonts.SMALL_PIXEL.get(18);
-            String watermarkText = Constants.name + /*" (Ушли на рекод)" + " " +*/ Minecraft.getDebugFPS() + "ФПС";
+            String watermarkText = Constants.name + " (Upgrade)" + " " + Minecraft.getDebugFPS() + " FPS";
 
             float width = Math.max(pixelFontSmall.getWidth(watermark2Text.getOutput().toString()), pixelFont.getWidth(watermarkText)) + (margin * 1.5F), height = 22;
             position.size.set(width, height);
@@ -127,7 +128,7 @@ public class Watermark extends Module {
     private StringBuilder getWatermarkText() {
         StringBuilder watermarkText = new StringBuilder();
         String wmtext = text.getOutput().toString();
-        watermarkText.append(watermark.getValue().equals(Constants.name) ? Constants.name /*+ " (Ушли на рекод, ожидайте!)"*/ : wmtext);
+        watermarkText.append(watermark.getValue().equals(Constants.name) ? Constants.name + " (Upgrade!)" : wmtext);
 
         if (elements.isEnabled("FPS") || elements.isEnabled("Сервер") || elements.isEnabled("Юзер")) {
             watermarkText.append(TextFormatting.GRAY).append(" - ").append(TextFormatting.RESET);

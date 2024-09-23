@@ -17,7 +17,7 @@ public class ClientInfo {
 
     public String getTitle() {
         return String.format(
-                /*"%s %s (%s) -> (Ушли на рекод, ожидайте!)",*/
+                "%s %s (%s) -> (Upgrade!)",
                 getName(),
                 getVersion(),
                 getRelease().getName());
