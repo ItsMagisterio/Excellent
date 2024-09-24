@@ -6,7 +6,7 @@ import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.client.module.api.Category;
 import dev.excellent.client.module.api.Module;
 import dev.excellent.client.module.api.ModuleInfo;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.impl.util.pattern.Singleton;
 import dev.excellent.impl.value.impl.BooleanValue;
 import dev.excellent.impl.value.impl.ModeValue;
@@ -74,7 +74,7 @@ public class Animations extends Module {
 
 
     public boolean auraCheck() {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         return !auraOnly.getValue() || aura.isEnabled() && aura.getTarget() != null;
     }
 }

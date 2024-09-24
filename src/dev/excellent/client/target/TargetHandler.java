@@ -5,7 +5,7 @@ import dev.excellent.api.event.impl.player.UpdateEvent;
 import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.api.interfaces.game.IMinecraft;
 import dev.excellent.client.module.impl.combat.AntiBot;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.impl.util.player.PlayerUtil;
 import dev.excellent.impl.util.rotation.AuraUtil;
 import dev.excellent.impl.value.impl.ModeValue;
@@ -60,31 +60,31 @@ public class TargetHandler implements IMinecraft {
 
     private static boolean isValidTarget(final LivingEntity entity) {
         if (entity == null) return false;
-        final KillAura killAura = KillAura.singleton.get();
+        final AttackAura attackAura = AttackAura.singleton.get();
         if (!mc.player.canEntityBeSeen(entity)) return false;
         if (entity.getHealth() <= 0 || !entity.isAlive() || entity.equals(mc.player)) return false;
         if (entity instanceof ArmorStandEntity) return false;
-        if (!killAura.getTargets().isEnabled("Невидимые") && entity.isInvisible()) {
+        if (!attackAura.getTargets().isEnabled("Невидимые") && entity.isInvisible()) {
             return false;
         }
         if (entity instanceof PlayerEntity player) {
             if (AntiBot.singleton.get().isEnabled() && AntiBot.contains(player)) return false;
             if (Excellent.getInst().getFriendManager().isFriend(player.getGameProfile().getName())) return false;
-            if (!killAura.getTargets().isEnabled("Игроки")) {
+            if (!attackAura.getTargets().isEnabled("Игроки")) {
                 return false;
-            } else if (!killAura.getTargets().isEnabled("Голые") && player.getTotalArmorValue() <= 0) {
+            } else if (!attackAura.getTargets().isEnabled("Голые") && player.getTotalArmorValue() <= 0) {
                 return false;
             }
         }
         if (entity instanceof MobEntity) {
-            return killAura.getTargets().isEnabled("Мобы");
+            return attackAura.getTargets().isEnabled("Мобы");
         }
         return true;
     }
 
     private static LivingEntity findTarget(final double range) {
         List<LivingEntity> validTargets = getTargets(range);
-        ModeValue sortMode = KillAura.singleton.get().sortMode;
+        ModeValue sortMode = AttackAura.singleton.get().sortMode;
         if (validTargets.size() > 1) {
             if (sortMode.is("Всему")) {
                 validTargets.sort((o1, o2) -> {

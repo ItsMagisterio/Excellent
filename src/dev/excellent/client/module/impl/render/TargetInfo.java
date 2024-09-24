@@ -6,7 +6,7 @@ import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.client.module.api.Category;
 import dev.excellent.client.module.api.Module;
 import dev.excellent.client.module.api.ModuleInfo;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.impl.font.Font;
 import dev.excellent.impl.font.Fonts;
 import dev.excellent.impl.util.animation.Animation;
@@ -66,8 +66,8 @@ public class TargetInfo extends Module {
     private final Animation prevHealthAnimation = new Animation(Easing.EASE_OUT_CUBIC, 750);
 
     public final Listener<Render2DEvent> onRender2D = event -> {
-        if (KillAura.singleton.get().isEnabled() && KillAura.singleton.get().getTarget() != null && KillAura.singleton.get().getTarget() instanceof AbstractClientPlayerEntity) {
-            this.target = KillAura.singleton.get().getTarget();
+        if (AttackAura.singleton.get().isEnabled() && AttackAura.singleton.get().getTarget() != null && AttackAura.singleton.get().getTarget() instanceof AbstractClientPlayerEntity) {
+            this.target = AttackAura.singleton.get().getTarget();
             this.timer.reset();
         }
         if (mc.currentScreen instanceof ChatScreen) {

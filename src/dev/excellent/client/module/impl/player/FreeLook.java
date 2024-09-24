@@ -7,7 +7,7 @@ import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.client.module.api.Category;
 import dev.excellent.client.module.api.Module;
 import dev.excellent.client.module.api.ModuleInfo;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.client.rotation.FreeLookHandler;
 import dev.excellent.client.rotation.Rotation;
 import dev.excellent.client.rotation.RotationHandler;
@@ -27,19 +27,19 @@ public class FreeLook extends Module {
     @Override
     protected void onEnable() {
         super.onEnable();
-        if (KillAura.singleton.get().isEnabled() && KillAura.singleton.get().getTarget() != null) return;
+        if (AttackAura.singleton.get().isEnabled() && AttackAura.singleton.get().getTarget() != null) return;
         RotationHandler.update(new Rotation(mc.player.rotationYaw, mc.player.rotationPitch), 360, 0, 1);
     }
 
     @Override
     protected void onDisable() {
         super.onDisable();
-        if (KillAura.singleton.get().isEnabled() && KillAura.singleton.get().getTarget() != null) return;
+        if (AttackAura.singleton.get().isEnabled() && AttackAura.singleton.get().getTarget() != null) return;
         RotationHandler.update(new Rotation(mc.player.rotationYaw, mc.player.rotationPitch), 360, 0, 1);
     }
 
     private final Listener<StrafeEvent> onStrafe = event -> {
-        if (KillAura.singleton.get().isEnabled() && KillAura.singleton.get().getTarget() != null || FreeCam.singleton.get().isEnabled())
+        if (AttackAura.singleton.get().isEnabled() && AttackAura.singleton.get().getTarget() != null || FreeCam.singleton.get().isEnabled())
             return;
         if (Keyboard.isKeyDown(key.getValue())) {
             RotationHandler.update(new Rotation(rotation.x, rotation.y), 360, 1, 1);
@@ -47,7 +47,7 @@ public class FreeLook extends Module {
     };
 
     private final Listener<KeyboardPressEvent> onKeyPress = event -> {
-        if (KillAura.singleton.get().isEnabled() && KillAura.singleton.get().getTarget() != null) return;
+        if (AttackAura.singleton.get().isEnabled() && AttackAura.singleton.get().getTarget() != null) return;
         if (event.getScreen() == null && event.getKeyCode() == key.getValue()) {
             if (autoThirdPerson.getValue()) {
                 prevPointOfView = mc.gameSettings.getPointOfView();
@@ -57,7 +57,7 @@ public class FreeLook extends Module {
         }
     };
     private final Listener<KeyboardReleaseEvent> onKeyRelease = event -> {
-        if (KillAura.singleton.get().isEnabled() && KillAura.singleton.get().getTarget() != null) return;
+        if (AttackAura.singleton.get().isEnabled() && AttackAura.singleton.get().getTarget() != null) return;
         if (event.getScreen() == null && event.getKeyCode() == key.getValue()) {
             if (autoThirdPerson.getValue()) {
                 mc.gameSettings.setPointOfView(prevPointOfView);

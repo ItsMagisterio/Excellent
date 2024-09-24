@@ -5,7 +5,7 @@ import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.client.module.api.Category;
 import dev.excellent.client.module.api.Module;
 import dev.excellent.client.module.api.ModuleInfo;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.impl.util.pattern.Singleton;
 import dev.luvbeeq.baritone.api.BaritoneUtils;
 
@@ -16,7 +16,7 @@ public class Sprint extends Module {
         if (mc.player.isSwimming() || mc.currentScreen != null)
             return;
 
-        if (KillAura.singleton.get().isEnabled() && KillAura.singleton.get().getTarget() != null)
+        if (AttackAura.singleton.get().isEnabled() && AttackAura.singleton.get().getTarget() != null)
             return;
 
         mc.gameSettings.keyBindSprint.setPressed(!mc.player.isSprinting()

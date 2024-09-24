@@ -5,7 +5,7 @@ import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.client.module.api.Category;
 import dev.excellent.client.module.api.Module;
 import dev.excellent.client.module.api.ModuleInfo;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.impl.util.animation.Animation;
 import dev.excellent.impl.util.animation.Easing;
 import dev.excellent.impl.util.pattern.Singleton;
@@ -49,7 +49,7 @@ public class TargetStrafe extends Module {
 
     public final Listener<MoveInputEvent> onMove = event -> {
         if (!mode.is("Грим")) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (toReturn(aura)) return;
         if (target != null && allowStrafe()) {
             event.setJump(false);
@@ -61,7 +61,7 @@ public class TargetStrafe extends Module {
     };
     public final Listener<JumpEvent> onJump = event -> {
         if (!mode.is("Грим")) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (toReturn(aura)) return;
         if (target != null && allowStrafe()) {
             setRotation();
@@ -82,20 +82,20 @@ public class TargetStrafe extends Module {
         }
 
         if (!mode.is("Грим")) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (toReturn(aura)) return;
         if (target != null && allowStrafe()) {
             event.setSprinting(false);
         }
     };
 
-    private boolean toReturn(KillAura aura) {
+    private boolean toReturn(AttackAura aura) {
         return !aura.isEnabled() || mc.player.isInLiquid() || mc.player.isSwimming();
     }
 
     public final Listener<StrafeEvent> onStrafe = event -> {
         if (!mode.is("Грим")) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (toReturn(aura)) return;
 
         if (target != null && allowStrafe()) {
@@ -113,7 +113,7 @@ public class TargetStrafe extends Module {
 
     private void setRotation() {
         if (!mode.is("Грим")) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (!aura.isEnabled() || aura.getTarget() == null) {
             this.yaw = mc.player.rotationYaw;
             return;
@@ -133,7 +133,7 @@ public class TargetStrafe extends Module {
     public final Listener<UpdateEvent> onUpdate = event -> {
         if (!mode.is("Грим")) return;
         updateTarget();
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (toReturn(aura)) return;
         if (target == null) return;
 
@@ -182,7 +182,7 @@ public class TargetStrafe extends Module {
     }
 
     private LivingEntity getTarget() {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.isEnabled() && aura.getTarget() != null) {
             return aura.getTarget();
         }

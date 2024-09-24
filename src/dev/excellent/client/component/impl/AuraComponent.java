@@ -5,7 +5,7 @@ import dev.excellent.api.event.impl.render.Render3DPosedEvent;
 import dev.excellent.api.interfaces.client.IAccess;
 import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.client.component.Component;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.impl.util.animation.Animation;
 import dev.excellent.impl.util.animation.Easing;
 import dev.excellent.impl.util.math.Interpolator;
@@ -37,7 +37,7 @@ public class AuraComponent extends Component implements IAccess {
     public LivingEntity target = null;
     private final long startTime = System.currentTimeMillis();
     private final Listener<Render2DEvent> onRender2D = event -> {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null) {
             target = aura.getTarget();
         }
@@ -49,7 +49,7 @@ public class AuraComponent extends Component implements IAccess {
     };
 
     private final Listener<Render3DPosedEvent> onRender3D = event -> {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null) {
             target = aura.getTarget();
         }
@@ -61,7 +61,7 @@ public class AuraComponent extends Component implements IAccess {
     };
 
     private void auraProcess(Render2DEvent event) {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         markerAnimation.run(aura.getTarget() == null ? 0 : 255);
         if (aura.getChecks().get("Таргет есп").getValue()) {
             if (aura.targetEspMode.is("Старый")) {
@@ -71,7 +71,7 @@ public class AuraComponent extends Component implements IAccess {
     }
 
     private void auraProcess(Render3DPosedEvent event) {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         markerA.run(aura.getTarget() == null ? 0 : 1);
         if (aura.getChecks().get("Таргет есп").getValue()) {
             if (aura.targetEspMode.is("Новый")) {
@@ -126,7 +126,7 @@ public class AuraComponent extends Component implements IAccess {
     }
 
     public void drawMarker(MatrixStack matrix) {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
 
         int alpha = (int) markerAnimation.getValue();
         float alphaPC = (alpha / 255F);

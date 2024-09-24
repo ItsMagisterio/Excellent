@@ -6,7 +6,7 @@ import dev.excellent.api.interfaces.event.Listener;
 import dev.excellent.client.module.api.Category;
 import dev.excellent.client.module.api.Module;
 import dev.excellent.client.module.api.ModuleInfo;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.impl.util.chat.ChatUtil;
 import dev.excellent.impl.util.pattern.Singleton;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +17,7 @@ public class MiddleClickFriend extends Module {
     public static Singleton<MiddleClickFriend> singleton = Singleton.create(() -> Module.link(MiddleClickFriend.class));
 
     private final Listener<MouseInputEvent> onMouseInput = event -> {
-        if (event.getMouseButton() != 2 || KillAura.singleton.get().isEnabled()) return;
+        if (event.getMouseButton() != 2 || AttackAura.singleton.get().isEnabled()) return;
 
 
         if (mc.pointedEntity instanceof PlayerEntity player) {

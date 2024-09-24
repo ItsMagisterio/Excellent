@@ -31,9 +31,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 
 @Getter
-@ModuleInfo(name = "Kill Aura", description = "Осуществляет автоматические удары по заданным существам.", category = Category.COMBAT)
-public class KillAura extends Module {
-    public static Singleton<KillAura> singleton = Singleton.create(() -> Module.link(KillAura.class));
+@ModuleInfo(name = "Attack Aura", description = "Осуществляет автоматические удары по заданным существам.", category = Category.COMBAT)
+public class AttackAura extends Module {
+    public static Singleton<AttackAura> singleton = Singleton.create(() -> Module.link(AttackAura.class));
     private final NumberValue attackRange = new NumberValue("Дистанция", this, 3, 3, 6, 0.1f);
     private final ModeValue modeValue = new ModeValue("Режим", this).add(SubMode.of("Обычная", "ХВХ"));
     public final ModeValue sortMode = new ModeValue("Сортировка по", this)

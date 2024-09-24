@@ -124,7 +124,7 @@ public final class ModuleManager extends java.util.ArrayList<Module> {
                 new AutoFix(),
                 new TargetInfo(),
                 new FogBlur(),
-                new KillAura(),
+                new AttackAura(),
 //                new Marker(),
                 new Spider()
         );

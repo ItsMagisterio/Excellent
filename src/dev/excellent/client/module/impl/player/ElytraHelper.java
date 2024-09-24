@@ -9,7 +9,7 @@ import dev.excellent.client.module.api.Category;
 import dev.excellent.client.module.api.Module;
 import dev.excellent.client.module.api.ModuleInfo;
 import dev.excellent.client.module.impl.combat.AutoPotion;
-import dev.excellent.client.module.impl.combat.KillAura;
+import dev.excellent.client.module.impl.combat.AttackAura;
 import dev.excellent.client.script.ScriptConstructor;
 import dev.excellent.impl.util.chat.ChatUtil;
 import dev.excellent.impl.util.keyboard.Keyboard;
@@ -212,7 +212,7 @@ public class ElytraHelper extends Module {
             event.setStrafe(0);
         }
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
 
         if (!strafe.getValue()) return;
@@ -222,7 +222,7 @@ public class ElytraHelper extends Module {
     };
     public final Listener<JumpEvent> onJump = event -> {
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
 
         if (!strafe.getValue()) return;
@@ -232,7 +232,7 @@ public class ElytraHelper extends Module {
     };
     public final Listener<PlayerLookEvent> onLook = event -> {
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
 
         if (!strafe.getValue()) return;
@@ -243,7 +243,7 @@ public class ElytraHelper extends Module {
     };
     public final Listener<StrafeEvent> onStrafe = event -> {
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
 
         if (!strafe.getValue()) return;
@@ -253,7 +253,7 @@ public class ElytraHelper extends Module {
     };
     private final Listener<MotionEvent> onMotion = event -> {
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
 
         if (!strafe.getValue()) return;
@@ -267,7 +267,7 @@ public class ElytraHelper extends Module {
 
     private final Listener<LookVecEvent> onLookVec = event -> {
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
 
         if (!strafe.getValue()) return;
@@ -281,7 +281,7 @@ public class ElytraHelper extends Module {
     };
     private final Listener<LookVecEvent.Elytra> onLookVecElytra = event -> {
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
 
         if (!strafe.getValue()) return;
@@ -293,7 +293,7 @@ public class ElytraHelper extends Module {
 
     private void setRotation(final LivingEntity base) {
         if (mc.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() != Items.ELYTRA) return;
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.getTarget() != null && aura.shouldAttack()) return;
         if ((target.hurtTime == 0) && fireworkTimer.hasReached(fireworkDelay.getValue().doubleValue()) || (mc.player.getDistance(target) < 10 && fireworkTimer.hasReached(500))) {
             useFirework();
@@ -331,7 +331,7 @@ public class ElytraHelper extends Module {
 
 
     private void updateTarget() {
-        KillAura aura = KillAura.singleton.get();
+        AttackAura aura = AttackAura.singleton.get();
         if (aura.isEnabled() && aura.getTarget() != null && aura.getTarget() != target) {
             target = aura.getTarget();
         } else {
