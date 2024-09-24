@@ -13,56 +13,75 @@ import dev.excellent.impl.value.impl.BooleanValue;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @ModuleInfo(name = "Anti Bot", description = "Игнорирует ботов.", category = Category.COMBAT)
 public class AntiBot extends Module {
     public static Singleton<AntiBot> singleton = Singleton.create(() -> Module.link(AntiBot.class));
-    public static final CopyOnWriteArrayList<PlayerEntity> bots = Lists.newCopyOnWriteArrayList();
+    public static final List<PlayerEntity> bots = new ArrayList<>();
 
     public final BooleanValue remove = new BooleanValue("Удалять из мира", this, false);
 
     @Override
     protected void onEnable() {
         super.onEnable();
-        bots.clear();
+        clearBots();
     }
 
     @Override
     protected void onDisable() {
         super.onDisable();
-        bots.clear();
+        clearBots();
     }
 
     private final Listener<UpdateEvent> onUpdate = event -> {
         for (PlayerEntity entity : mc.world.getPlayers()) {
-            if (!entity.getUniqueID().equals(PlayerEntity.getOfflineUUID(entity.getName().getString()))) {
-                if (!bots.contains(entity)) {
-                    bots.add(entity);
+            if (isBot(entity)) {
+                synchronized (bots) {
+                    if (!bots.contains(entity)) {
+                        bots.add(entity);
+                    }
                 }
             }
         }
 
         if (remove.getValue()) {
             try {
-                mc.world.getPlayers().removeIf(bots::contains);
-            } catch(Exception ignored) {
+                mc.world.getPlayers().removeIf(this::isBot);
+            } catch (Exception ignored) {
+                System.err.println("Ошибка при удалении ботов: " + ignored.getMessage());
             }
         }
     };
 
     public static boolean contains(LivingEntity entity) {
         if (entity instanceof PlayerEntity) {
-            return bots.contains(entity);
+            synchronized (bots) {
+                return bots.contains(entity);
+            }
         }
         return false;
     }
 
     public static boolean isEmpty() {
-        return bots.isEmpty();
+        synchronized (bots) {
+            return bots.isEmpty();
+        }
     }
 
-    private final Listener<WorldChangeEvent> onWorldChange = event -> bots.clear();
-    private final Listener<WorldLoadEvent> onWorldLoad = event -> bots.clear();
+    private boolean isBot(PlayerEntity entity) {
+        UUID entityUUID = entity.getUniqueID();
+        return !entityUUID.equals(PlayerEntity.getOfflineUUID(entity.getName().getString()));
+    }
 
+    private void clearBots() {
+        synchronized (bots) {
+            bots.clear();
+        }
+    }
+
+    private final Listener<WorldChangeEvent> onWorldChange = event -> clearBots();
+    private final Listener<WorldLoadEvent> onWorldLoad = event -> clearBots();
 }
